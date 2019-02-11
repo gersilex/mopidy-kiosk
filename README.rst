@@ -21,7 +21,6 @@ Mopidy-Kiosk
 .. image:: https://bettercodehub.com/edge/badge/gersilex/mopidy-kiosk?branch=develop
    :alt: BCH compliance
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/gersilex/mopidy-kiosk?branch=develop)](https://bettercodehub.com/)
 Mopidy web frontend for public and social playlist control
 
 
