@@ -14,6 +14,14 @@ Mopidy-Kiosk
    :target: https://coveralls.io/r/gersilex/mopidy-kiosk
    :alt: Test coverage
 
+.. image:: https://codebeat.co/badges/6b3676c5-9247-4d07-b940-d85f95e4bce1
+   :target: https://codebeat.co/projects/github-com-gersilex-mopidy-kiosk-develop
+   :alt: codebeat badge
+
+.. image:: https://bettercodehub.com/edge/badge/gersilex/mopidy-kiosk?branch=develop
+   :alt: BCH compliance
+
+[![BCH compliance](https://bettercodehub.com/edge/badge/gersilex/mopidy-kiosk?branch=develop)](https://bettercodehub.com/)
 Mopidy web frontend for public and social playlist control
 
 
