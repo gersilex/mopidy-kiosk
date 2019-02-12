@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from __future__ import unicode_literals
 
 import re
@@ -26,7 +27,6 @@ setup(
     install_requires=[
         'setuptools',
         'Mopidy >= 1.0',
-        'Pykka >= 1.1',
     ],
     entry_points={
         'mopidy.ext': [
