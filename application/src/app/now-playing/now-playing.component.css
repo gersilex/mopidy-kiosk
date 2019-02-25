@@ -1,0 +1,14 @@
+.title {
+  font-size: 26px;
+}
+
+.info {
+  font-size: 14px;
+  color: #BBB;
+  margin-top: -6px;
+  margin-bottom: -6px;
+}
+
+div {
+  text-align: center;
+}

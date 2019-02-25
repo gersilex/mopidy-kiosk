@@ -1,0 +1,11 @@
+input {
+  padding: inherit;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+mat-form-field:focus-within {
+  width: 500px;
+}
