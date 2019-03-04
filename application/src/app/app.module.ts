@@ -1,16 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { LayoutModule } from '@angular/cdk/layout';
 import { NowPlayingComponent } from './now-playing/now-playing.component';
 import { SearchComponent } from './search/search.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     NavigationComponent,
     NowPlayingComponent,
-    SearchComponent
+    SearchComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,
@@ -27,10 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
 
     MatInputModule,
     MatToolbarModule,
-    LayoutModule,
-    MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

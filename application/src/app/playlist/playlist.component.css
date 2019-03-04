@@ -1,0 +1,28 @@
+.header {
+  text-align: center;
+  font-size: large;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  padding: 6px;
+}
+
+th {
+  border-bottom: 1px solid gray;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+.current {
+  font-weight: bolder;
+  background-color: rgb(0, 0, 0);
+  color: white;
+}

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, Subscriber, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-interface Track {
+interface Result {
   result: object;
 }
 
@@ -12,9 +12,21 @@ interface Track {
 
 
 export class MopidyService {
-  JsonRpcUrl = 'http://lindaddy:6680/mopidy/rpc';
+  JsonRpcUrl = 'http://localhost:6680/mopidy/rpc';
 
-  track$ = new Subject<Track>();
+  track$ = new Subject<Result>();
+  playlist$ = new Subject<Result>();
+
+  describeAPI() {
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.describe',
+      jsonrpc: '2.0',
+      params: {},
+      id: 1
+    }).toPromise().then((data: Result) => {
+      console.log(data);
+    });
+  }
 
   refreshTrack() {
     this.http.post(this.JsonRpcUrl, {
@@ -22,16 +34,33 @@ export class MopidyService {
       jsonrpc: '2.0',
       params: {},
       id: 1
-    }).toPromise().then((data: Track) => {
+    }).toPromise().then((data: Result) => {
       this.track$.next(data);
     });
   }
 
+  refreshPlaylist() {
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.get_tracks',
+      jsonrpc: '2.0',
+      params: {},
+      id: 1
+    }).toPromise().then((data: Result) => {
+      this.playlist$.next(data);
+      console.log(data);
+    });
+  }
+
   constructor(private http: HttpClient) {
-    setInterval(() => {
-      this.refreshTrack();
-    }, 2000);
+    this.describeAPI();
 
     this.refreshTrack();
+    this.refreshPlaylist();
+
+    setInterval(() => {
+      this.refreshTrack();
+      this.refreshPlaylist();
+    }, 10000);
+
   }
 }
