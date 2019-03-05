@@ -9,7 +9,7 @@ import { MopidyService } from '../mopidy.service';
 })
 export class NowPlayingComponent {
 
-  constructor(private mopidy: MopidyService) { }
+  constructor(public mopidy: MopidyService) { }
 }
 
 

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaylistComponent implements OnInit {
 
-  constructor(private mopidy: MopidyService) { }
+  constructor(public mopidy: MopidyService) { }
 
   ngOnInit() {
   }

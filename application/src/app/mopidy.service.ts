@@ -12,55 +12,91 @@ interface Result {
 
 
 export class MopidyService {
-  JsonRpcUrl = 'http://localhost:6680/mopidy/rpc';
+  JsonRpcUrl = 'http://lindaddy:6680/mopidy/rpc';
+
+  connectionFailure = true;
 
   track$ = new Subject<Result>();
   playlist$ = new Subject<Result>();
 
-  describeAPI() {
+  connect() {
     this.http.post(this.JsonRpcUrl, {
       method: 'core.describe',
       jsonrpc: '2.0',
       params: {},
       id: 1
     }).toPromise().then((data: Result) => {
+      this.connectionFailure = false;
       console.log(data);
+    }).catch(err => {
+      console.error(err);
     });
+
+    // Set up the required tracklist configuration
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.set_consume',
+      jsonrpc: '2.0',
+      params: { value: true },
+      id: 1
+    }).toPromise();
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.set_random',
+      jsonrpc: '2.0',
+      params: { value: false },
+      id: 1
+    }).toPromise();
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.set_single',
+      jsonrpc: '2.0',
+      params: { value: false },
+      id: 1
+    }).toPromise();
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.set_repeat',
+      jsonrpc: '2.0',
+      params: { value: false },
+      id: 1
+    }).toPromise();
   }
 
   refreshTrack() {
     this.http.post(this.JsonRpcUrl, {
-      method: 'core.playback.get_current_track',
+      method: 'core.playback.get_current_tl_track',
       jsonrpc: '2.0',
       params: {},
       id: 1
     }).toPromise().then((data: Result) => {
       this.track$.next(data);
+    }).catch(() => {
+      this.connectionFailure = true;
     });
   }
 
   refreshPlaylist() {
     this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.get_tracks',
+      method: 'core.tracklist.get_tl_tracks',
       jsonrpc: '2.0',
       params: {},
       id: 1
     }).toPromise().then((data: Result) => {
       this.playlist$.next(data);
-      console.log(data);
+    }).catch(() => {
+      this.connectionFailure = true;
     });
   }
 
   constructor(private http: HttpClient) {
-    this.describeAPI();
-
-    this.refreshTrack();
+    this.connect();
     this.refreshPlaylist();
+    this.refreshTrack();
 
     setInterval(() => {
-      this.refreshTrack();
-      this.refreshPlaylist();
-    }, 10000);
-
+      if (this.connectionFailure) {
+        this.connect();
+      } else {
+        this.refreshPlaylist();
+        this.refreshTrack();
+      }
+    }, 2000);
   }
 }

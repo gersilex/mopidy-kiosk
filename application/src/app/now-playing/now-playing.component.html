@@ -1,11 +1,11 @@
 <div class='widget'>
   <div class='title'>
-    {{(mopidy.track$ | async)?.result?.name}}
+    {{(mopidy.track$ | async)?.result?.track.name}}
   </div>
   <div class="info">
-    <span *ngFor='let artist of (mopidy.track$ | async)?.result?.artists'>
-    {{ artist.name }} ·
+    <span *ngFor='let artist of (mopidy.track$ | async)?.result?.track.artists'>
+      {{ artist.name }} ·
     </span>
-    {{(mopidy.track$ | async)?.result?.album?.name}}
+    {{(mopidy.track$ | async)?.result?.track.album?.name}}
   </div>
 </div>

@@ -8,6 +8,10 @@
   z-index: 1;
 }
 
+.disconnected {
+  background-color: darkred;
+}
+
 mat-icon {
   padding-right: 29px;
   font-size: 64px;

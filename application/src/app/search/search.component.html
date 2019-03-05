@@ -2,5 +2,5 @@
   <span matPrefix>
     <mat-icon>search</mat-icon>
   </span>
-  <input matInput type='search'>
+  <input matInput type='search' [disabled]='mopidy.connectionFailure'>
 </mat-form-field>

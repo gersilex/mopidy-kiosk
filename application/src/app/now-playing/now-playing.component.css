@@ -4,7 +4,7 @@
 
 .info {
   font-size: 14px;
-  color: #BBB;
+  color: rgba(255, 255, 255, 0.7);
   margin-top: -6px;
   margin-bottom: -6px;
 }
