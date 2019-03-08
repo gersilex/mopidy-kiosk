@@ -23,13 +23,17 @@ export class MopidyService {
   playlist$ = new Subject<Result>();
   searchResults$ = new Subject<Result>();
 
-  connect() {
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.describe',
+  post(method: string, params = {}) {
+    return this.http.post(this.JsonRpcUrl, {
+      method,
       jsonrpc: '2.0',
-      params: {},
+      params,
       id: 1
-    }).toPromise().then((data: Result) => {
+    }).toPromise();
+  }
+
+  connect() {
+    this.post('core.describe', {}).then((data: Result) => {
       this.connectionFailure = false;
       console.log(data);
     }).catch(err => {
@@ -37,39 +41,14 @@ export class MopidyService {
     });
 
     // Set up the required tracklist configuration
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.set_consume',
-      jsonrpc: '2.0',
-      params: { value: true },
-      id: 1
-    }).toPromise();
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.set_random',
-      jsonrpc: '2.0',
-      params: { value: false },
-      id: 1
-    }).toPromise();
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.set_single',
-      jsonrpc: '2.0',
-      params: { value: false },
-      id: 1
-    }).toPromise();
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.set_repeat',
-      jsonrpc: '2.0',
-      params: { value: false },
-      id: 1
-    }).toPromise();
+    this.post('core.tracklist.set_consume', { value: true });
+    this.post('core.tracklist.set_random', { value: false });
+    this.post('core.tracklist.set_single', { value: false });
+    this.post('core.tracklist.set_repeat', { value: false });
   }
 
   refreshTrack() {
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.playback.get_current_tl_track',
-      jsonrpc: '2.0',
-      params: {},
-      id: 1
-    }).toPromise().then((data: Result) => {
+    this.post('core.playback.get_current_tl_track').then((data: Result) => {
       this.track$.next(data);
     }).catch(() => {
       this.connectionFailure = true;
@@ -77,12 +56,7 @@ export class MopidyService {
   }
 
   refreshPlaylist() {
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.get_tl_tracks',
-      jsonrpc: '2.0',
-      params: {},
-      id: 1
-    }).toPromise().then((data: Result) => {
+    this.post('core.tracklist.get_tl_tracks').then((data: Result) => {
       this.playlist$.next(data);
     }).catch(() => {
       this.connectionFailure = true;
@@ -96,15 +70,9 @@ export class MopidyService {
     if (query === '') {
       return;
     }
-    this.http.post(this.JsonRpcUrl, {
-      method: 'core.library.search',
-      jsonrpc: '2.0',
-      params: {
-        query: { any: [query] }
-      },
-      id: 1
-    }).toPromise().then((data: Result) => {
-      console.log('internal', data);
+    this.post('core.library.search', {
+      query: { any: [query] }
+    }).then((data: Result) => {
       this.searchResults$.next(data);
     }).catch((err) => {
       this.connectionFailure = true;
@@ -112,15 +80,8 @@ export class MopidyService {
     });
   }
 
-  enqueueUri(newUri: string) {
-    return this.http.post(this.JsonRpcUrl, {
-      method: 'core.tracklist.add',
-      jsonrpc: '2.0',
-      params: {
-        uri: newUri
-      },
-      id: 1
-    }).toPromise();
+  enqueueUri(uri: string) {
+    return this.post('core.tracklist.add', { uri });
   }
 
   constructor(private http: HttpClient) {
@@ -143,9 +104,5 @@ export class MopidyService {
       .subscribe(query => {
         this.searchContainsAny(query);
       });
-
-    // setTimeout(() => {
-    //   this.searchQuery$.next('test');
-    // }, 1000);
   }
 }
