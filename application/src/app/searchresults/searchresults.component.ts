@@ -16,14 +16,15 @@ export class SearchresultsComponent implements OnInit {
 
   enqueueTrack(track: any) {
     this.mopidy.enqueueUri(track.uri).then(() => {
-      this.mopidy.refreshPlaylist();
+      this.mopidy.refresh();
       this.mopidy.searchQuery$.next();
     });
     this.snackbar.open('Added ' + track.name,
       undefined,
       {
         duration: 10000,
-        verticalPosition: 'top'
+        verticalPosition: 'top',
+        horizontalPosition: 'left'
       });
   }
 }
