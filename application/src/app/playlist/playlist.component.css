@@ -6,15 +6,11 @@
 table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 td,
 th {
   padding: 6px;
-}
-
-th {
   text-align: left;
 }
 
