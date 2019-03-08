@@ -47,15 +47,12 @@ export class MopidyService {
     this.post('core.tracklist.set_repeat', { value: false });
   }
 
-  refreshTrack() {
+  refresh() {
     this.post('core.playback.get_current_tl_track').then((data: Result) => {
       this.track$.next(data);
     }).catch(() => {
       this.connectionFailure = true;
     });
-  }
-
-  refreshPlaylist() {
     this.post('core.tracklist.get_tl_tracks').then((data: Result) => {
       this.playlist$.next(data);
     }).catch(() => {
@@ -86,15 +83,13 @@ export class MopidyService {
 
   constructor(private http: HttpClient) {
     this.connect();
-    this.refreshPlaylist();
-    this.refreshTrack();
+    this.refresh();
 
     setInterval(() => {
       if (this.connectionFailure) {
         this.connect();
       } else {
-        this.refreshPlaylist();
-        this.refreshTrack();
+        this.refresh();
       }
     }, 30000);
 
