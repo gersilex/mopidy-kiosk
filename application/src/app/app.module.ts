@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -12,6 +12,9 @@ import { NowPlayingComponent } from './now-playing/now-playing.component';
 import { SearchComponent } from './search/search.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { SearchresultsComponent } from './searchresults/searchresults.component';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -20,17 +23,22 @@ import { PlaylistComponent } from './playlist/playlist.component';
     NavigationComponent,
     NowPlayingComponent,
     SearchComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    SearchresultsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
 
     MatInputModule,
     MatToolbarModule,
     MatIconModule,
-    MatGridListModule
+    MatGridListModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

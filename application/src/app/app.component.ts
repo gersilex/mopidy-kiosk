@@ -1,3 +1,4 @@
+import { MopidyService } from './mopidy.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Mopidy Kiosk';
+
+  constructor(public mopidy: MopidyService) { }
 }

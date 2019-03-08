@@ -1,9 +1,11 @@
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 interface Result {
   result: object;
+  error: object;
 }
 
 @Injectable({
@@ -16,8 +18,10 @@ export class MopidyService {
 
   connectionFailure = true;
 
+  searchQuery$ = new Subject<string>();
   track$ = new Subject<Result>();
   playlist$ = new Subject<Result>();
+  searchResults$ = new Subject<Result>();
 
   connect() {
     this.http.post(this.JsonRpcUrl, {
@@ -85,6 +89,40 @@ export class MopidyService {
     });
   }
 
+  searchContainsAny(query: string) {
+    if (query === undefined) {
+      return;
+    }
+    if (query === '') {
+      return;
+    }
+    this.http.post(this.JsonRpcUrl, {
+      method: 'core.library.search',
+      jsonrpc: '2.0',
+      params: {
+        query: { any: [query] }
+      },
+      id: 1
+    }).toPromise().then((data: Result) => {
+      console.log('internal', data);
+      this.searchResults$.next(data);
+    }).catch((err) => {
+      this.connectionFailure = true;
+      console.error(err);
+    });
+  }
+
+  enqueueUri(newUri: string) {
+    return this.http.post(this.JsonRpcUrl, {
+      method: 'core.tracklist.add',
+      jsonrpc: '2.0',
+      params: {
+        uri: newUri
+      },
+      id: 1
+    }).toPromise();
+  }
+
   constructor(private http: HttpClient) {
     this.connect();
     this.refreshPlaylist();
@@ -97,6 +135,17 @@ export class MopidyService {
         this.refreshPlaylist();
         this.refreshTrack();
       }
-    }, 2000);
+    }, 30000);
+
+    this.searchQuery$
+      .pipe(debounceTime(1000))
+      .pipe(distinctUntilChanged())
+      .subscribe(query => {
+        this.searchContainsAny(query);
+      });
+
+    // setTimeout(() => {
+    //   this.searchQuery$.next('test');
+    // }, 1000);
   }
 }

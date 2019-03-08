@@ -3,5 +3,7 @@
   <div class="part playlist">
     <app-playlist></app-playlist>
   </div>
-  <!-- <div class="part results">TODO</div> -->
+  <div *ngIf='mopidy.searchQuery$ | async' class="part results">
+    <app-searchresults></app-searchresults>
+  </div>
 </div>

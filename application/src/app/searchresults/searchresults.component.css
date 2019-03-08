@@ -1,0 +1,42 @@
+div.provider {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+p.provider {
+  margin: 5px;
+  text-align: center;
+  color: grey;
+  text-transform: capitalize;
+  font-variant: small-caps;
+  font-size: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 6px;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: rgba(57, 65, 129, 0.1);
+}
+
+mat-spinner {
+  margin: 50px auto;
+}
+
+button {
+  text-transform: uppercase;
+  min-width: auto;
+  padding: 0 6px;
+}
+
+.gmusic {
+  background-color: rgba(255, 166, 0, 0.3)
+}

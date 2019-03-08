@@ -2,5 +2,6 @@
   <span matPrefix>
     <mat-icon>search</mat-icon>
   </span>
-  <input matInput type='search' [disabled]='mopidy.connectionFailure'>
+  <input #search matInput type='search' [disabled]='mopidy.connectionFailure' [(ngModel)]='value' (keyup)='changed()'
+    (onfocus)='changed()'>
 </mat-form-field>
