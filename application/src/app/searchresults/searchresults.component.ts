@@ -23,8 +23,6 @@ export class SearchresultsComponent implements OnInit {
       undefined,
       {
         duration: 10000,
-        verticalPosition: 'top',
-        horizontalPosition: 'left'
       });
   }
 }

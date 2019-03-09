@@ -1,3 +1,4 @@
+import { CuratorService } from './curator.service';
 import { MopidyService } from './mopidy.service';
 import { Component } from '@angular/core';
 
@@ -9,5 +10,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Mopidy Kiosk';
 
-  constructor(public mopidy: MopidyService) { }
+  constructor(public mopidy: MopidyService, private curator: CuratorService) {
+  }
 }

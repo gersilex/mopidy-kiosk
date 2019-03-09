@@ -12,3 +12,7 @@
 div {
   text-align: center;
 }
+
+.artist:not(:empty)::after {
+  content: ' · ';
+}

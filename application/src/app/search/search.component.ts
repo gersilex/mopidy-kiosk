@@ -1,3 +1,4 @@
+import { CuratorService } from './../curator.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MopidyService } from '../mopidy.service';
@@ -9,7 +10,7 @@ import { MopidyService } from '../mopidy.service';
 })
 export class SearchComponent implements OnInit {
   @ViewChild('search') private searchElement: any;
-  constructor(public mopidy: MopidyService) { }
+  constructor(public mopidy: MopidyService, public curator: CuratorService) { }
 
   value: string;
   changed() {

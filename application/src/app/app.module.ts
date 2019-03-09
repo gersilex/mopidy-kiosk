@@ -15,6 +15,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { SearchresultsComponent } from './searchresults/searchresults.component';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MessagesComponent } from './messages/messages.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     NowPlayingComponent,
     SearchComponent,
     PlaylistComponent,
-    SearchresultsComponent
+    SearchresultsComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

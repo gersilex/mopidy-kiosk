@@ -2,11 +2,11 @@
   <th>#</th>
   <th>Title</th>
   <th>Artist</th>
-  <th *ngIf='!(mopidy.searchQuery$ | async)'>Album</th>
+  <th>Album</th>
   <tr *ngFor="let song of (mopidy.playlist$ | async)?.result; let i = index" [ngClass]="{'bg-primary': i === 0}">
     <td>{{ song.tlid }}</td>
     <td>{{ song.track.name }}</td>
     <td><span *ngIf='song.track.artists'>{{ song.track.artists[0]?.name }}</span></td>
-    <td *ngIf='!(mopidy.searchQuery$ | async)'>{{ song.track.album?.name }}</td>
+    <td>{{ song.track.album?.name }}</td>
   </tr>
 </table>

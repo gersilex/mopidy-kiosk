@@ -2,6 +2,6 @@
   <span matPrefix>
     <mat-icon>search</mat-icon>
   </span>
-  <input #search matInput type='search' [disabled]='mopidy.connectionFailure' [(ngModel)]='value' (keyup)='changed()'
-    (onfocus)='changed()'>
+  <input #search matInput type='search' [disabled]='mopidy.connectionFailure || (curator.tracklistSizeRule?.violated$ | async)'
+    [(ngModel)]='value' (keyup)='changed()' (onfocus)='changed()'>
 </mat-form-field>

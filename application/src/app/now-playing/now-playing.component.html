@@ -3,9 +3,11 @@
     {{(mopidy.track$ | async)?.result?.track.name}}
   </div>
   <div class="info">
-    <span *ngFor='let artist of (mopidy.track$ | async)?.result?.track.artists'>
+    <span *ngFor='let artist of (mopidy.track$ | async)?.result.track.artists'>
       {{ artist.name }} ·
     </span>
-    {{(mopidy.track$ | async)?.result?.track.album?.name}}
+    <span>
+      {{(mopidy.track$ | async)?.result?.track?.album?.name}}
+    </span>
   </div>
 </div>

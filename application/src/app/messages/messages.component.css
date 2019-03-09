@@ -1,0 +1,9 @@
+.warning {
+  background-color: rgb(255, 176, 32);
+  color: black;
+  padding: 10px;
+  text-align: center;
+  font-size: large;
+  border: solid 1px black;
+  border-top: none;
+}
