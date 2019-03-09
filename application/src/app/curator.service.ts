@@ -21,7 +21,7 @@ class Rule {
 }
 
 class TracklistSizeRule extends Rule {
-  maximumSize = 26;
+  maximumSize = 3;
   message = 'Tracklist reached maximum number of songs (' + this.maximumSize + ') in queue';
 
   constructor(private mopidy: MopidyService) {
@@ -33,6 +33,11 @@ class TracklistSizeRule extends Rule {
   }
 }
 
+
+class DefaultRadioStationRule extends Rule {
+  uri = '';
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,8 +47,6 @@ export class CuratorService {
   public readonly tracklistSizeRule = new TracklistSizeRule(this.mopidy);
 
   constructor(private mopidy: MopidyService) {
-    console.log('Curator loaded.');
-
     this.rules.push(this.tracklistSizeRule);
   }
 }

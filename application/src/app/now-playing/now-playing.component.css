@@ -13,6 +13,6 @@ div {
   text-align: center;
 }
 
-.artist:not(:empty)::after {
-  content: ' · ';
+.info span:not(:empty) {
+  padding: 0 8px;
 }

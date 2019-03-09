@@ -50,8 +50,6 @@ export class MopidyService {
   refresh() {
     this.post('core.playback.get_current_tl_track').then((data: Result) => {
       this.track$.next(data);
-      console.log(data);
-
     }).catch(() => {
       this.connectionFailure = true;
     });
