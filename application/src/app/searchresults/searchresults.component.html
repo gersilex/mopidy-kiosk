@@ -1,7 +1,7 @@
 <div class='spinner'>
   <mat-spinner *ngIf='!(mopidy.searchResults$ | async)'></mat-spinner>
 </div>
-<div class='provider {{ provider.uri.split(":")[0] }}' *ngFor='let provider of (mopidy.searchResults$ | async)?.result.reverse()'>
+<div class='provider {{ provider.uri.split(":")[0] }}' *ngFor='let provider of (mopidy.searchResults$ | async)?.result'>
   <p class='provider'>{{ provider.uri.split(":")[0] }}</p>
   <table>
     <th></th>
