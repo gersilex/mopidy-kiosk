@@ -2,7 +2,7 @@ import { TlTrack, Result } from './tl-track';
 import { MopidyService } from './mopidy.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 class Rule {
   public readonly name: string;
@@ -39,8 +39,8 @@ class TracklistSizeRule extends Rule {
 }
 
 class DefaultRadioStationRule extends Rule {
-  uri = 'http://prem2.di.fm:80/edm?e3e8af0c9518a3f5f4d286ed';
-  message = 'Default radio station will play until you add at least two songs to the tracklist';
+  uri = 'http://prem2.di.fm:80/edm_hi?' + environment.apiKeys.DiFmPremium;
+  message = 'Default radio station will play until you add more songs to the tracklist';
 
   private track: TlTrack;
 
@@ -111,15 +111,21 @@ class EnqueueBackoffRule extends Rule {
 
   message = 'New songs can be added after a delay to prevent spamming';
   lastAction = Date.now();
-  // lastAction: number;
   percentLeft$ = new Subject<number>();
+  isDefaultRadioStationPlaying: boolean;
 
-  constructor(private mopidy: MopidyService) {
+  constructor(private mopidy: MopidyService, private curator: CuratorService) {
     super('Enqueue Backoff', 1, () => {
+      if (this.isDefaultRadioStationPlaying) { return; }
+
       let timeLeft = (this.lastAction + this.backoff) - Date.now();
       if (timeLeft < 0) { timeLeft = 0; }
       this.violated$.next(timeLeft > 0);
       this.percentLeft$.next((timeLeft / this.backoff) * 100);
+    });
+
+    this.curator.defaultRadioStationRule.violated$.subscribe(bool => {
+      this.isDefaultRadioStationPlaying = bool;
     });
 
     this.mopidy.enqueueAction$.subscribe(() => {
@@ -128,13 +134,11 @@ class EnqueueBackoffRule extends Rule {
 
     this.mopidy.playlist$.subscribe((result: Result) => {
       this.backoff = result.result.length + Math.pow(result.result.length, this.backoffFactor);
-      if (this.backoff < 20_000) { this.backoff = 20_000; }
+      // if (this.backoff < 20_000) { this.backoff = 20_000; }
     });
   }
-
-  public update() {
-  }
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -145,7 +149,7 @@ export class CuratorService {
   public readonly defaultRadioStationRule = new DefaultRadioStationRule(this.mopidy);
   public readonly playbackStateRule = new PlaybackStateRule(this.mopidy);
   public readonly tracklistSettingsRule = new TracklistSettingsRule(this.mopidy);
-  public enqueueBackoffRule = new EnqueueBackoffRule(this.mopidy);
+  public enqueueBackoffRule = new EnqueueBackoffRule(this.mopidy, this);
 
   constructor(private mopidy: MopidyService) {
     // Add rules that display messages here
