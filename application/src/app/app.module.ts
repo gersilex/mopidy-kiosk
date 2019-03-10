@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -40,7 +40,8 @@ import { MessagesComponent } from './messages/messages.component';
     MatGridListModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

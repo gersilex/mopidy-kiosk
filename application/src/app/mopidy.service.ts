@@ -1,4 +1,5 @@
-import { Result } from './tl-track';
+import { CuratorService } from './curator.service';
+import { Result, SingleResult } from './tl-track';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -17,9 +18,10 @@ export class MopidyService {
   connectionFailure = true;
 
   searchQuery$ = new Subject<string>();
-  track$ = new Subject<Result>();
+  track$ = new Subject<SingleResult>();
   playlist$ = new Subject<Result>();
   searchResults$ = new Subject<Result>();
+  enqueueAction$ = new Subject<void>();
 
   post(method: string, params = {}) {
     return this.http.post(this.JsonRpcUrl, {
@@ -42,7 +44,7 @@ export class MopidyService {
   }
 
   refresh() {
-    this.post('core.playback.get_current_tl_track').then((data: Result) => {
+    this.post('core.playback.get_current_tl_track').then((data: SingleResult) => {
       this.track$.next(data);
     }).catch(() => {
       this.connectionFailure = true;
@@ -72,6 +74,7 @@ export class MopidyService {
   }
 
   enqueueUri(uri: string) {
+    this.enqueueAction$.next();
     return this.post('core.tracklist.add', { uri });
   }
 

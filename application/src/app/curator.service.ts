@@ -1,7 +1,8 @@
-import { TlTrack } from './tl-track';
+import { TlTrack, Result } from './tl-track';
 import { MopidyService } from './mopidy.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 class Rule {
   public readonly name: string;
@@ -24,7 +25,8 @@ class Rule {
 }
 
 class TracklistSizeRule extends Rule {
-  maximumSize = 4;
+  maximumSize = 200;
+
   message = 'Tracklist reached maximum number of songs (' + this.maximumSize + ') in queue';
 
   constructor(private mopidy: MopidyService) {
@@ -35,7 +37,6 @@ class TracklistSizeRule extends Rule {
     });
   }
 }
-
 
 class DefaultRadioStationRule extends Rule {
   uri = 'http://prem2.di.fm:80/edm?e3e8af0c9518a3f5f4d286ed';
@@ -104,6 +105,36 @@ class TracklistSettingsRule extends Rule {
   }
 }
 
+class EnqueueBackoffRule extends Rule {
+  backoff: number;
+  backoffFactor = 3;
+
+  message = 'New songs can be added after a delay to prevent spamming';
+  lastAction = Date.now();
+  // lastAction: number;
+  percentLeft$ = new Subject<number>();
+
+  constructor(private mopidy: MopidyService) {
+    super('Enqueue Backoff', 1, () => {
+      let timeLeft = (this.lastAction + this.backoff) - Date.now();
+      if (timeLeft < 0) { timeLeft = 0; }
+      this.violated$.next(timeLeft > 0);
+      this.percentLeft$.next((timeLeft / this.backoff) * 100);
+    });
+
+    this.mopidy.enqueueAction$.subscribe(() => {
+      this.lastAction = Date.now();
+    });
+
+    this.mopidy.playlist$.subscribe((result: Result) => {
+      this.backoff = result.result.length + Math.pow(result.result.length, this.backoffFactor);
+      if (this.backoff < 20_000) { this.backoff = 20_000; }
+    });
+  }
+
+  public update() {
+  }
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -114,11 +145,13 @@ export class CuratorService {
   public readonly defaultRadioStationRule = new DefaultRadioStationRule(this.mopidy);
   public readonly playbackStateRule = new PlaybackStateRule(this.mopidy);
   public readonly tracklistSettingsRule = new TracklistSettingsRule(this.mopidy);
+  public enqueueBackoffRule = new EnqueueBackoffRule(this.mopidy);
 
   constructor(private mopidy: MopidyService) {
     // Add rules that display messages here
     this.rules.push(this.tracklistSizeRule);
     this.rules.push(this.defaultRadioStationRule);
+    this.rules.push(this.enqueueBackoffRule);
   }
 }
 

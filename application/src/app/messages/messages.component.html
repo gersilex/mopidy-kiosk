@@ -3,17 +3,4 @@
     {{ rule.message }}
   </div>
 </div>
-
-<!-- <ul>
-  <li>Rules
-    <ul *ngFor='let rule of curator.rules'>
-      <li>
-        {{ rule.name }}
-        <ul>
-          <li>violated: {{ rule.violated$ | async }}</li>
-          <li *ngIf='rule.violated$ | async'>{{ rule.message }}</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul> -->
+<mat-progress-bar [value]='value'></mat-progress-bar>

@@ -6,3 +6,15 @@
   font-size: large;
   border-top: solid 1px black;
 }
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: #394181;
+}
+
+::ng-deep .mat-progress-bar-element {
+  background-color: transparent;
+}
+
+::ng-deep .mat-progress-bar-background {
+  display: none;
+}
