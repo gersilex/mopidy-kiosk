@@ -87,7 +87,7 @@ export class MopidyService {
       } else {
         this.refresh();
       }
-    }, 10000);
+    }, 60000);
 
     this.searchQuery$
       .pipe(debounceTime(1000))

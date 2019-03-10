@@ -45,7 +45,7 @@ class DefaultRadioStationRule extends Rule {
   private track: TlTrack;
 
   constructor(private mopidy: MopidyService) {
-    super('Default Radio Stream', 11, () => {
+    super('Default Radio Stream', 60, () => {
       // Get tracks excluding the default radio station
       this.mopidy.post('core.tracklist.get_tl_tracks').then((tracklist: { result: [TlTrack] }) => {
         const userTracks = tracklist.result.filter(track => track.track.uri !== this.uri);
@@ -134,7 +134,7 @@ class EnqueueBackoffRule extends Rule {
 
     this.mopidy.playlist$.subscribe((result: Result) => {
       this.backoff = result.result.length + Math.pow(result.result.length, this.backoffFactor);
-      // if (this.backoff < 20_000) { this.backoff = 20_000; }
+      if (this.backoff < 20_000) { this.backoff = 20_000; }
     });
   }
 }
