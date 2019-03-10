@@ -3,8 +3,8 @@
     {{(mopidy.track$ | async)?.result?.track.name}}
   </div>
   <div class="info">
-    <span class='artist' *ngFor='let artist of (mopidy.track$ | async)?.result?.track.artists'>{{ artist.name }}</span>
-    <span *ngIf='(mopidy.track$ | async)?.result?.track.album.name'>{{(mopidy.track$ |
-      async)?.result?.track.album.name}}</span>
+    <span class='artist' *ngFor='let artist of (mopidy.track$ | async)?.result?.track?.artists'>{{ artist?.name }}</span>
+    <span *ngIf='(mopidy.track$ | async)?.result?.track?.album?.name'>{{(mopidy.track$ |
+      async)?.result?.track?.album?.name}}</span>
   </div>
 </div>

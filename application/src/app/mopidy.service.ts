@@ -1,12 +1,10 @@
+import { Result } from './tl-track';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-export interface Result {
-  result: object;
-  error: object;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -37,10 +35,6 @@ export class MopidyService {
       console.log('Mopidy API', data);
       this.connectionFailure = false;
       this.refresh();
-      this.post('core.tracklist.set_consume', { value: true });
-      this.post('core.tracklist.set_random', { value: false });
-      this.post('core.tracklist.set_single', { value: false });
-      this.post('core.tracklist.set_repeat', { value: false });
     }).catch(err => {
       console.error(err);
     });
