@@ -4,6 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -13,8 +14,6 @@ import { HttpClient } from '@angular/common/http';
 
 
 export class MopidyService {
-  JsonRpcUrl = 'http://lindaddy:6680/mopidy/rpc';
-
   connectionFailure = true;
 
   searchQuery$ = new Subject<string>();
@@ -24,7 +23,7 @@ export class MopidyService {
   enqueueAction$ = new Subject<void>();
 
   post(method: string, params = {}) {
-    return this.http.post(this.JsonRpcUrl, {
+    return this.http.post(environment.mopidyRpcUrl, {
       method,
       jsonrpc: '2.0',
       params,
