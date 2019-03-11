@@ -84,8 +84,6 @@ class PlaybackStateRule extends Rule {
   constructor(private mopidy: MopidyService) {
     super('Playback Status', 4, () => {
       this.mopidy.post('core.playback.get_state').then((state: { result: string }) => {
-        console.log('playback status', state.result);
-
         if (state.result === 'stopped') {
           mopidy.post('core.playback.play');
         }
