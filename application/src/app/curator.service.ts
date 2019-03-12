@@ -108,7 +108,7 @@ class EnqueueBackoffRule extends Rule {
   backoffFactor = 3;
 
   message = 'New songs can be added after a delay to prevent spamming';
-  lastAction = Date.now();
+  lastAction: number;
   percentLeft$ = new Subject<number>();
   isDefaultRadioStationPlaying: boolean;
 
