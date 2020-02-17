@@ -74,7 +74,7 @@ export class MopidyService {
 
   enqueueUri(uri: string) {
     this.enqueueAction$.next();
-    return this.post('core.tracklist.add', { uri });
+    return this.post('core.tracklist.add', { uris: [uri] });
   }
 
   constructor(private http: HttpClient) {
