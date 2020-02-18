@@ -62,13 +62,10 @@ class DefaultRadioStationRule extends Rule {
           this.violated$.next(false);
           if (this.track.track.uri === this.uri) {
             // Skip the radio track if it is playing right now
-            // Using 'next' on a stream is broken because of a gstreamer update
-            // see https://discourse.mopidy.com/t/frustrating-playback-glitchy/2484
-            // branch release-2.2 of Mopidy works fine (09-03-2019)
             this.mopidy.post('core.playback.next');
           } else {
             // Remove the radio track from the tracklist if it is not playing right now
-            this.mopidy.post('core.tracklist.remove', { uri: [this.uri] });
+            this.mopidy.post('core.tracklist.remove', { criteria: { uri: [this.uri] }});
           }
         }
       });
