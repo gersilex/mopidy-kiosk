@@ -39,7 +39,7 @@ class TracklistSizeRule extends Rule {
 }
 
 class DefaultRadioStationRule extends Rule {
-  uri = 'http://prem2.di.fm:80/futurebass_hi?' + environment.apiKeys.DiFmPremium;
+  uri = 'http://prem2.di.fm:80/chillntropicalhouse?' + environment.apiKeys.DiFmPremium;
   message = 'Default radio station will play until you add more songs to the tracklist';
 
   private track: TlTrack;
