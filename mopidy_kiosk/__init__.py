@@ -1,33 +1,49 @@
-from __future__ import unicode_literals
-
 import logging
-import os
+import pathlib
+
+import pkg_resources
 
 from mopidy import config, ext
 
+__version__ = pkg_resources.get_distribution("Mopidy-Kiosk").version
 
-__version__ = '0.1.0'
+# TODO: If you need to log, use loggers named after the current Python module
+logger = logging.getLogger(__name__)
 
 
 class Extension(ext.Extension):
 
-    dist_name = 'Mopidy-Kiosk'
-    ext_name = 'kiosk'
+    dist_name = "Mopidy-Kiosk"
+    ext_name = "kiosk"
     version = __version__
 
     def get_default_config(self):
-        conf_file = os.path.join(os.path.dirname(__file__), 'ext.conf')
-        return config.read(conf_file)
+        return config.read(pathlib.Path(__file__).parent / "ext.conf")
 
     def get_config_schema(self):
-        schema = super(Extension, self).get_config_schema()
+        schema = super().get_config_schema()
         # TODO: Comment in and edit, or remove entirely
-        #schema['username'] = config.String()
-        #schema['password'] = config.Secret()
+        #schema["username"] = config.String()
+        #schema["password"] = config.Secret()
         return schema
 
     def setup(self, registry):
-        registry.add('http:static', {
-            'name': self.ext_name,
-            'path': os.path.join(os.path.dirname(__file__), 'dist'),
-        })
+        # You will typically only implement one of the following things
+        # in a single extension.
+
+        # HEADS UP! I can also implement a frontend to be able to control
+        # the core API from python script. This can be combined with the
+        # static http stuff to have a backend for my angular app!
+
+        # TODO: Edit or remove entirely
+        # from .frontend import FoobarFrontend
+        # registry.add("frontend", FoobarFrontend)
+
+        # TODO: Edit or remove entirely
+        registry.add(
+            "http:static",
+            {
+                "name": self.ext_name,
+                "path": str(pathlib.Path(__file__).parent / "dist"),
+            },
+        )

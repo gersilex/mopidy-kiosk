@@ -1,6 +1,5 @@
-from __future__ import unicode_literals
-
-from mopidy_kiosk import Extension, frontend as frontend_lib
+from mopidy_kiosk import Extension
+from mopidy_kiosk import frontend as frontend_lib
 
 
 def test_get_default_config():
@@ -8,8 +7,8 @@ def test_get_default_config():
 
     config = ext.get_default_config()
 
-    assert '[kiosk]' in config
-    assert 'enabled = true' in config
+    assert "[kiosk]" in config
+    assert "enabled = true" in config
 
 
 def test_get_config_schema():
@@ -18,8 +17,8 @@ def test_get_config_schema():
     schema = ext.get_config_schema()
 
     # TODO Test the content of your config schema
-    #assert 'username' in schema
-    #assert 'password' in schema
+    # assert "username" in schema
+    # assert "password" in schema
 
 
 # TODO Write more tests
