@@ -104,9 +104,10 @@ class TracklistSettingsRule extends Rule {
 }
 
 class EnqueueBackoffRule extends Rule {
-  backoff: number;
   backoffFactor = 3;
+  minimumBackoff = 10_000;
 
+  backoff: number;
   message = 'New songs can be added after a delay to prevent spamming';
   lastAction: number;
   percentLeft$ = new Subject<number>();
@@ -132,7 +133,7 @@ class EnqueueBackoffRule extends Rule {
 
     this.mopidy.playlist$.subscribe((result: Result) => {
       this.backoff = result.result.length + Math.pow(result.result.length, this.backoffFactor);
-      if (this.backoff < 20_000) { this.backoff = 20_000; }
+      if (this.backoff < this.minimumBackoff) { this.backoff = this.minimumBackoff; }
     });
   }
 }
@@ -156,4 +157,3 @@ export class CuratorService {
     this.rules.push(this.enqueueBackoffRule);
   }
 }
-
